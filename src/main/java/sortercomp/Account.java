@@ -11,10 +11,12 @@ public class Account {
         this.balance = balance;
     }
 
+    //deposite
     public void incBalance(int amount) {
         balance += amount;
     }
 
+    //with draw
     public void decBalance(int amount) {
         balance -= amount;
     }

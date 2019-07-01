@@ -5,6 +5,10 @@ import main.java.sortercomp.AccountUtils;
 import main.java.sortercomp.InsuffitientFundsException;
 import org.junit.Test;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
 import static org.junit.Assert.assertEquals;
 
 public class AccountTest {
@@ -58,5 +62,37 @@ public class AccountTest {
         } catch (InsuffitientFundsException e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void many() {
+        final Account a = new Account(1000);
+        final Account b = new Account(4000);
+        final ExecutorService executorService = Executors.newFixedThreadPool(4);
+        executorService.submit(() -> {
+            try {
+                AccountUtils.transfer(a, b, 500);
+            } catch (InsuffitientFundsException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    @Test//(expected = InsuffitientFundsException.class)
+    public void many2() throws InsuffitientFundsException {
+        final Account a = new Account(1000);
+        final Account b = new Account(4000);
+        final ExecutorService executorService = Executors.newFixedThreadPool(4);
+//        executorService.submit(() -> {
+//            AccountUtils.transfer(a, b, 2000);
+//        });
+//
+        Future future = executorService.submit(() -> {
+            try {
+                AccountUtils.transfer(a, b, 2000);
+            } catch (InsuffitientFundsException e) {
+                e.printStackTrace();
+            }
+        });
     }
 }

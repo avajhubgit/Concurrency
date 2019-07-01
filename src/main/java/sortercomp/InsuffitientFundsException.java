@@ -1,4 +1,6 @@
 package main.java.sortercomp;
 
-public class InsuffitientFundsException {
+public class InsuffitientFundsException extends Exception {
+    public InsuffitientFundsException() {
+    }
 }
